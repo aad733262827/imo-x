@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: imo-x
+    runtime: node
+    plan: free
+    buildCommand: |
+      set -e
+      curl -sL https://johnvansickle.com/ffmpeg/builds/ffmpeg-release-amd64-static.tar.xz -o /tmp/ff.tar.xz
+      tar xJf /tmp/ff.tar.xz -C /tmp --strip-components=1
+      mkdir -p bin
+      cp /tmp/ffmpeg bin/ffmpeg 2>/dev/null || cp /tmp/ffmpeg-*static*/ffmpeg bin/ffmpeg
+      chmod +x bin/ffmpeg
+      curl -sL https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o bin/yt-dlp
+      chmod +x bin/yt-dlp
+      npm install --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/status
+    autoDeploy: true

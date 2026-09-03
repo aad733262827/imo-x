@@ -1,0 +1,7 @@
+node_modules/
+bin/
+tmp/
+settings.json
+projects.json
+.env
+.DS_Store
